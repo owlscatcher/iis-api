@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model data_raw {
+  layer          Int     @default(0)
+  archive_itemid Int
+  source_time    BigInt
+  server_time    BigInt?
+  status_code    Int     @default(0)
+  value          Float?
+  s_value        String?
+
+  @@id([layer, archive_itemid, source_time], map: "raw_data_idx_pk")
+  @@index([source_time], map: "source_time")
+}
+
+model items {
+  id         Int     @id(map: "itemsid_pk")
+  project_id Int
+  itemid     BigInt
+  path       String? @db.VarChar(2000)
+  name       String? @db.VarChar(2000)
+  first_time BigInt?
+  last_time  BigInt?
+  count      BigInt  @default(0)
+  type       Int     @default(0)
+
+  @@unique([itemid, path, project_id], map: "item_idx")
+}
+
+model projects {
+  id   Int    @id(map: "projectsid_pk") @default(autoincrement())
+  name String @db.VarChar(100)
+  guid String @unique(map: "guid_idx") @db.VarChar(50)
+}
+
+model sys_props {
+  name  String @id(map: "sys_propsname_pk") @db.VarChar(50)
+  value String @db.VarChar(255)
+}
