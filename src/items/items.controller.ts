@@ -1,5 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ItemsService } from './items.service';
+import { sortBy } from 'lodash';
 import DateTimeConverter from 'src/helpers/dateTimeConverter';
 
 @Controller('items')
@@ -22,7 +23,7 @@ export class ItemsController {
       count: Number(item.count),
       type: item.type,
     }));
-    return serializedItems;
+    return sortBy(serializedItems, ['id']);
   }
 
   @Get(':id')
@@ -41,6 +42,6 @@ export class ItemsController {
       count: Number(item.count),
       type: item.type,
     };
-    return serializedItems;
+    return sortBy(serializedItems, ['id']);
   }
 }
