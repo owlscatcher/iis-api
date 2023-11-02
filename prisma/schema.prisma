@@ -16,6 +16,8 @@ model data_raw {
   value          Float?
   s_value        String?
 
+  item          items    @relation(fields: [archive_itemid], references: [id])
+
   @@id([layer, archive_itemid, source_time], map: "raw_data_idx_pk")
   @@index([source_time], map: "source_time")
 }
@@ -30,6 +32,8 @@ model items {
   last_time  BigInt?
   count      BigInt  @default(0)
   type       Int     @default(0)
+
+  data_raw  data_raw[]
 
   @@unique([itemid, path, project_id], map: "item_idx")
 }
