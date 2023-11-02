@@ -1,7 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { ItemsService } from './items.service';
-import { sortBy } from 'lodash';
 import DateTimeConverter from 'src/helpers/dateTimeConverter';
+import TrimName from 'src/helpers/trimName';
 
 @Controller('items')
 export class ItemsController {
@@ -17,13 +17,13 @@ export class ItemsController {
       project_id: Number(item.project_id),
       itemid: Number(item.itemid),
       path: item.path,
-      name: item.name.substr(item.name.lastIndexOf(".") + 1),
+      name: TrimName(item.name),
       first_time: dtc.GetDateTime(Number(item.first_time)),
       last_time: dtc.GetDateTime(Number(item.last_time)),
       count: Number(item.count),
       type: item.type,
     }));
-    return sortBy(serializedItems, ['id']);
+    return serializedItems;
   }
 
   @Get(':id')
@@ -36,12 +36,12 @@ export class ItemsController {
       project_id: Number(item.project_id),
       itemid: Number(item.itemid),
       path: item.path,
-      name: item.name.substr(item.name.lastIndexOf(".") + 1),
+      name: TrimName(item.name),
       first_time: dtc.GetDateTime(Number(item.first_time)),
       last_time: dtc.GetDateTime(Number(item.last_time)),
       count: Number(item.count),
       type: item.type,
     };
-    return sortBy(serializedItems, ['id']);
+    return serializedItems;
   }
 }
