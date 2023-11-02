@@ -1,0 +1,14 @@
+version: '3.9'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: iis-api
+    environment:
+      - PORT=${PORT}
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./src:/app/src
