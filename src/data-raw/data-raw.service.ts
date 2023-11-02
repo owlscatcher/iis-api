@@ -14,7 +14,8 @@ export class DataRawService {
         source_time: { 
           gte: dtc.GetFileTime(new Date()) - Number(dtc.FILE_TIME_DAY),
           lte: dtc.GetFileTime(new Date()),
-        }
+        },
+        layer: 2,
       },
     });
   }
