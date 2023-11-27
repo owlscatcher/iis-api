@@ -18,8 +18,12 @@ export class ItemsController {
       itemid: Number(item.itemid),
       path: item.path,
       name: TrimName(item.name),
-      first_time: dtc.GetDateTime(Number(item.first_time)).toLocaleString('en-GB'),
-      last_time: dtc.GetDateTime(Number(item.last_time)).toLocaleString('en-GB'),
+      first_time: dtc
+        .GetDateTime(Number(item.first_time))
+        .toLocaleString('en-GB'),
+      last_time: dtc
+        .GetDateTime(Number(item.last_time))
+        .toLocaleString('en-GB'),
       count: Number(item.count),
       type: item.type,
     }));
