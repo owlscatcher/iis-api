@@ -6,7 +6,19 @@ export class ItemsService {
   constructor(private prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.items.findMany({ orderBy: { id: 'asc' } });
+    return this.prisma.items.findMany({
+      include: {
+        data_raw: {
+          select: {
+            value: true,
+            source_time: true,
+          },
+
+          take: -1,
+        },
+      },
+      orderBy: { id: 'asc' },
+    });
   }
 
   findOne(@Param('id', ParseIntPipe) id: number) {
