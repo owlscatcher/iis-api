@@ -5,20 +5,26 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class ItemsService {
   constructor(private prisma: PrismaService) {}
 
-  findAll() {
-    return this.prisma.items.findMany({
-      include: {
-        data_raw: {
-          select: {
-            value: true,
-            source_time: true,
-          },
+  async findAll(): Promise<any> {
+    const items = await this.prisma.items.findMany({ orderBy: { id: 'asc' } });
 
-          take: -1,
-        },
-      },
-      orderBy: { id: 'asc' },
-    });
+    const ItemsWithJoin = await Promise.all(
+      items.map(async (item) => {
+        const data_raw = await this.prisma.data_raw.findFirst({
+          where: {
+            archive_itemid: item.id,
+            source_time: item.last_time,
+          },
+        });
+
+        return {
+          ...item,
+          data_raw,
+        };
+      }),
+    );
+
+    return ItemsWithJoin;
   }
 
   findOne(@Param('id', ParseIntPipe) id: number) {

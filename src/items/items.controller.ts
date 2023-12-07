@@ -26,12 +26,12 @@ export class ItemsController {
         .toLocaleString('en-GB'),
       count: Number(item.count),
       type: item.type,
-      value: item.data_raw.map((data) => ({
-        value: Number(data.value),
+      data_raw: {
         source_time: dtc
-          .GetDateTime(Number(data.source_time))
+          .GetDateTime(Number(item.data_raw.source_time))
           .toLocaleString('en-GB'),
-      })),
+        value: Number(item.data_raw.value),
+      },
     }));
     return serializedItems;
   }
